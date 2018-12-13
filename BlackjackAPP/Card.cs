@@ -12,7 +12,7 @@ namespace BlackjackAPP
         public Name Name { get; set; }
         public int Value { get; set; }
 
-        public Card(Suit Suit, Name Name, int Value, bool Visibility = false)
+        public Card(Suit Suit, Name Name, int Value)
         {
             this.Suit = Suit;
             this.Name = Name;
@@ -21,13 +21,14 @@ namespace BlackjackAPP
         }
         public string ToString() //представление в консоли
         {
-            return Name.ToString() + " " + Suit.ToString();
+            return Name.ToString(); // + " " + Suit.ToString();
         }
     }
 
     public class Deck
     {
         private List<Card> deck;
+        private List<Card> returned = new List<Card>();
         public int round = 1; //Может потом сделаю фичу
 
         public Deck()
@@ -45,8 +46,19 @@ namespace BlackjackAPP
                 for (int j = 2; j < 15; j++)
                 {
                     deck.Add(new Card((Suit)i, (Name)j, ((j < 10) ? j : 10)));
-                    //Вот тут баг можно было оставить
                 }
+            }
+        }
+
+        public void BackToDeck(Card[] cards)
+        {
+            returned.AddRange(cards);
+        }
+        public void CreateFromReturned()
+        {
+            foreach (Card card in returned)
+            {
+                deck.Add(card);
             }
         }
         //https://stackoverflow.com/questions/273313/randomize-a-listt
@@ -68,7 +80,7 @@ namespace BlackjackAPP
         {
             if (deck.Count <= 0)
             {
-                this.CreateDeck();
+                this.CreateFromReturned();
                 this.Shuffle();
                 this.round++; //Фича пока не реализована
             }

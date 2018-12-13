@@ -20,42 +20,60 @@ namespace BlackjackAPP
             cards.Add(card);
         }
 
-        public void VievCards()
+        public string VievDealer()
         {
             if (hideCards)
             {
-                Console.WriteLine("Первая карта у дилера: {0}", cards[0].ToString());
+                return "" + "|" + cards[0].ToString() + "|" + "|?|";
             }
             else
             {
-                Console.WriteLine("\nКарты в руке:");
+                string str = "";
                 foreach (Card card in cards)
                 {
-                    Console.WriteLine("\t {0}", card.ToString());
+                    str += " |" + card.ToString() + "|";
                 }
-                Console.WriteLine("Сумма: {0}", Score());
+                return str;
             }
+
+        }
+        public string VievPlayer()
+        {
+            string str = "";
+            foreach (Card card in cards)
+            {
+                str += " |" + card.ToString() + "|";
+            }
+            return str;
         }
         public int Score()
         {
+            if (hideCards)
+            {
+                return cards[0].Value;
+            }
             int score = 0;
             foreach (Card card in cards)
             {
-                score += card.Value;
+                if (card.Name.ToString() != "Туз") score += card.Value;                
+            }
+            foreach (Card card in cards)
+            {
+                if (card.Name.ToString() == "Туз")
+                {
+                    if (score < 21) score += 11;
+                    else score += 1;
+                }
             }
             return score;
         }
 
-        public void NewRound()
+        public Card[] NewRound()
         {
+            Card[] r = cards.ToArray();
             cards.Clear();
+            return r;            
         }
-        
-        public void Balance()
-        {
-            Console.WriteLine("\n\t\t\t====================================");
-            Console.WriteLine("\n\t\t\tУ игрока {0} на счету {1}", this.Name, this.account.Value * Account.step);
-            Console.WriteLine("\n\t\t\t====================================");
-        }
+       
     }
 }
