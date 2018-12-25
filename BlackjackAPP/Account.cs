@@ -15,7 +15,7 @@
         }
         public bool Withdraw(int bids) // взять деньги, метод принимает количество шагов и результат списания
         {
-            if (Value >= bids)
+            if ((Value >= bids) && (bids > 0))
             {
                 Value -= bids;
                 return true;
@@ -26,6 +26,4 @@
             }
         }
     }
-
-
 }
