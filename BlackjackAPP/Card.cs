@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 
 namespace BlackjackAPP
 {
     public enum Suit { Пики, Трефы, Червы, Бубны }
-    public enum Name { Два = 2, Три, Четыре, Пять, Шесть, Семь, Восемь, Девять, Десять, Валет, Дама, Король, Туз }
-    
+    public enum Name { [Description("2")]  Два = 2, [Description("3")]  Три, [Description("4")] Четыре,
+        [Description("5")] Пять, [Description("6")] Шесть, [Description("7")] Семь, [Description("8")] Восемь,
+        [Description("9")] Девять, [Description("10")] Десять, [Description("J")] Валет, [Description("Q")] Дама,
+        [Description("K")] Король, [Description("A")] Туз }
+
+
     public class Card
     {
         public Suit Suit { get; set; }
@@ -21,7 +28,8 @@ namespace BlackjackAPP
         }
         public string ToString() //представление в консоли
         {
-            return Name.ToString(); // + " " + Suit.ToString();
+            
+            return Printer.GetDescription(Name).ToString(); //Name.ToString(); // + " " + Suit.ToString();
         }
     }
 

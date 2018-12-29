@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 
 namespace BlackjackAPP
 {
-    public class Printer
+    public static class Printer
     {
         static int origRow = 0;
         static int origCol = 0;
@@ -104,6 +106,13 @@ namespace BlackjackAPP
                     Console.WriteLine("\nВведите корректное значение - 1 или 2");
                 }
             }
+        }
+
+        public static string GetDescription(this Enum value)
+        {
+            return ((DescriptionAttribute)Attribute.GetCustomAttribute(
+                value.GetType().GetFields(BindingFlags.Public | BindingFlags.Static).Single(x => x.GetValue(null).Equals(value)),
+                typeof(DescriptionAttribute)))?.Description ?? value.ToString();
         }
     }
 }

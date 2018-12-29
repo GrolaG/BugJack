@@ -17,6 +17,7 @@ namespace BlackjackAPP
         {
             Printer.Welcome();
             player.Name = Printer.Introduce();
+            int best = BestScore.GetBest(player.Name);
             Printer.PrintScreenBeforeGameStarts(player, bidsInGame);
             StartNewGameWithNewChips();
             Console.WriteLine("\nТы проиграл))))");
@@ -53,13 +54,16 @@ namespace BlackjackAPP
                 //Вывод информации
                 Printer.PrintScreen(player, dealer, bidsInGame);
                 Printer.GameResult(RulesAndLogic.GameResults(dealer.Score(), player.Score()));
-                Printer.ContinueOrExit();
 
-                //Позже допилю сохранение результатов т.к. выводить их не нужно :)
-                if (player.account.Value > BestScore.GetBest(player.Name) && (player.account.Value > 10))
+                //Сохраняем данные
+                if (player.account.Value > BestScore.GetBest(player.Name))//&& (player.account.Value > 10))
                 {
                     BestScore.SetBest(player.Name, player.account.Value);
                 }
+                //Запрос на продолжение игры
+                Printer.ContinueOrExit();
+
+
 
                 //Сброс данных
                 RulesAndLogic.Reset(ref Deck, ref player, ref dealer, ref bidsInGame); 
